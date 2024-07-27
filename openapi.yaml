@@ -1,0 +1,660 @@
+openapi: '3.0.2'
+info:
+  title: DRACO SPEC
+  description: |
+    All endpoint that supports the server.
+  version: '1.0'
+  license: 
+    name: MIT
+    url: https://fr.wikipedia.org/wiki/Licence_MIT
+servers:
+  - url: https://dashboard.nogg.ovh/api/v1
+paths:
+  /login:
+    post:
+      operationId: login-post
+      summary: Log in into the app
+      responses:
+        '200':
+          description: The JWT used in all requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    format: jwt
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNiODE4MmE2LTU5MjQtNGMyMi1hNjY0LWQ2NTczN2Y1NzA4NCIsIm5hbWUiOiJKb2huIERvZSJ9.aIM7N3peRs7-oSVvOUYm7W_o8OwyJrWGSGr-wjSygpY
+
+  /logout:
+    post:
+      operationId: logout-post
+      summary: Log out from app
+      responses:
+        '200':
+          description: Logout message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bye :(
+
+
+  /automatons:
+    get:
+      operationId: automatons-get
+      summary: Returns all automatons
+      responses:
+        '200':
+          description: A JSON array of automatons identified by uuid
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 6b21e68a-8cb6-43f7-bf2b-e95491445257
+                    name:
+                      type: string
+                      example: ping
+
+
+  /automaton/{id}:
+    get:
+      operationId: automaton-get
+      summary: Returns an automaton
+      description: Returns an automaton json string that is present on the server.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the task
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A JSON object of an automaton
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 23e03036-7eb1-4bf0-8fea-d17f6798b882
+                  name:
+                    type: string
+                    example: ping
+                  language:
+                    type: string
+                    example: C
+                  exec:
+                    type: string
+                    example: bash
+                  version:
+                    type: string
+                    example: v1.0.0
+  /automaton:
+    post:
+      operationId: automaton-post
+      summary: Add a new automaton
+      description: Add a new automaton to the server
+      requestBody:
+        description: Information to provide to add a new automaton
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: ping
+                language:
+                  type: string
+                  example: C
+                exec:
+                  type: string
+                  example: bash
+                version:
+                  type: string
+                  example: v1.0.0
+      responses:
+        '200':
+          description: Automaton added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 23e03036-7eb1-4bf0-8fea-d17f6798b882
+                  name:
+                    type: string
+                    example: ping
+                  language:
+                    type: string
+                    example: C
+                  exec:
+                    type: string
+                    example: bash
+                  version:
+                    type: string
+                    example: v1.0.0
+    put:
+      operationId: automaton-put
+      summary: Modify an automaton
+      description: Modify an automaton to the server
+      requestBody:
+        description: Information to provide to modify an automaton
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 23e03036-7eb1-4bf0-8fea-d17f6798b882
+                name:
+                  type: string
+                  example: ping
+                language:
+                  type: string
+                  example: C
+                exec:
+                  type: string
+                  example: bash
+                version:
+                  type: string
+                  example: v1.1.0
+      responses:
+        '200':
+          description: Automaton modified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 23e03036-7eb1-4bf0-8fea-d17f6798b882
+                  name:
+                    type: string
+                    example: ping
+                  language:
+                    type: string
+                    example: C
+                  exec:
+                    type: string
+                    example: bash
+                  version:
+                    type: string
+                    example: v1.1.0
+    delete:
+      operationId: automaton-delete
+      summary: Delete an automaton
+      description: Delete an automaton to the server
+      requestBody:
+        description: Information to provide to delete an automaton
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 23e03036-7eb1-4bf0-8fea-d17f6798b882
+                name:
+                  type: string
+                  example: ping
+                language:
+                  type: string
+                  example: C
+                exec:
+                  type: string
+                  example: bash
+                version:
+                  type: string
+                  example: v1.1.0
+      responses:
+        '200':
+          description: Automaton modified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 23e03036-7eb1-4bf0-8fea-d17f6798b882
+
+  /tasks:
+    get:
+      operationId: tasks-get
+      summary: Returns a list of tasks
+      description: Retrieve and return the list of tasks available for an user on the servers
+      responses:
+        '200':
+          description: A JSON array of tasks identified by uuid
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 6b21e68a-8cb6-43f7-bf2b-e95491445257
+                    name:
+                      type: string
+                      example: ping google
+
+  /task/{id}:
+    get:
+      operationId: task-get
+      summary: Returns information about a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the task
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A task 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 6b21e68a-8cb6-43f7-bf2b-e95491445257
+                  name:
+                    type: string
+                    example: ping google
+                  run_count:
+                    type: integer
+                    example: 12
+                  args:
+                    type: array
+                    example: ["google.com"]
+                  config_file:
+                    type: string
+                    example: null
+  /task:
+    post:
+      operationId: task-post
+      summary: Add a task
+      description: Add a new task on the server
+      requestBody:
+        description: Information to provide to add a new task
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: ping google
+                automaton_id:
+                  type: string
+                  format: uuid
+                  example: 2449dbfe-80cf-443d-9291-f57cd3c399ff
+                args:
+                  type: string
+                  example: google
+                config_file:
+                  type: string
+                  example: .env
+      responses:
+        '200':
+          description: Task added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                  name:
+                    type: string
+                    example: ping google
+                  automaton_id:
+                    type: string
+                    format: uuid
+                    example: 2449dbfe-80cf-443d-9291-f57cd3c399ff
+                  args:
+                    type: string
+                    example: google
+                  config_file:
+                    type: string
+                    example: .env
+    put:
+      operationId: task-put
+      summary: Modify a task
+      description: Modify a task on the server
+      requestBody:
+        description: Information to provide to modify a task
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                name:
+                  type: string
+                  example: ping cloudflare
+                automaton_id:
+                  type: string
+                  format: uuid
+                  example: 2449dbfe-80cf-443d-9291-f57cd3c399ff
+                args:
+                  type: string
+                  example: google
+                config_file:
+                  type: string
+                  example: .env
+      responses:
+        '200':
+          description: Task modified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                  name:
+                    type: string
+                    example: ping cloudflare
+                  automaton_id:
+                    type: string
+                    format: uuid
+                    example: 2449dbfe-80cf-443d-9291-f57cd3c399ff
+                  args:
+                    type: string
+                    example: google
+                  config_file:
+                    type: string
+                    example: .env
+    delete:
+      operationId: task-delete
+      summary: Delete a task
+      description: Delete a task on the server
+      requestBody:
+        description: Information to provide to delete a task
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+      responses:
+        '200':
+          description: Task deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                  name:
+                    type: string
+                    example: ping cloudflare
+                  automaton_id:
+                    type: string
+                    format: uuid
+                    example: 2449dbfe-80cf-443d-9291-f57cd3c399ff
+                  args:
+                    type: string
+                    example: google
+                  config_file:
+                    type: string
+                    example: .env
+
+  /webhook/{id}:
+    get:
+      operationId: webhook-get
+      summary: Returns information about a webhook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the webhook
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A webhook 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 23445adc-b038-4be5-8e2d-42d0feaaeb7b
+                  taskId:
+                    type: string
+                    format: uuid
+                    example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                  endpoint:
+                    type: string
+                    example: https://example.com/myhook
+                  secret:
+                    type: string
+                    example: "*"
+                  payload_template:
+                    type: string
+                    example: "{'text':'return code is {}'}"  
+                  content_type:
+                    type: string
+                    example: application/json
+  /webhook:
+    post:
+      operationId: webhook-post
+      summary: Add a webhook
+      description: Add a new webhook on the server
+      requestBody:
+        description: Information to provide to add a new webhook
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                taskId:
+                  type: string
+                  format: uuid
+                  example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                endpoint:
+                  type: string
+                  example: https://example.com/myhook
+                secret:
+                  type: string
+                  example: "asecretsharedwithendpointserver"
+                payload_template:
+                  type: string
+                  example: "{'text':'return code is {}'}"  
+                content_type:
+                  type: string
+                  example: application/json
+      responses:
+        '200':
+          description: webhook added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 23445adc-b038-4be5-8e2d-42d0feaaeb7b
+                  taskId:
+                    type: string
+                    format: uuid
+                    example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                  endpoint:
+                    type: string
+                    example: https://example.com/myhook
+                  secret:
+                    type: string
+                    example: "*"
+                  payload_template:
+                    type: string
+                    example: "{'text':'return code is {}'}"  
+                  content_type:
+                    type: string
+                    example: application/json
+    put:
+      operationId: webhook-put
+      summary: Modify a webhook
+      description: Modify a webhook on the server
+      requestBody:
+        description: Information to provide to modify a webhook
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 23445adc-b038-4be5-8e2d-42d0feaaeb7b
+                taskId:
+                  type: string
+                  format: uuid
+                  example: 102aa5b4-6abc-45fc-a489-6ace1bc5ff7c
+                endpoint:
+                  type: string
+                  example: https://example.com/myhook2
+                secret:
+                  type: string
+                  example: "*"
+                payload_template:
+                  type: string
+                  example: "{'text':'return code is {}'}"  
+                content_type:
+                  type: string
+                  example: application/json
+      responses:
+        '200':
+          description: webhook modified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 23445adc-b038-4be5-8e2d-42d0feaaeb7b
+                  taskId:
+                    type: string
+                    format: uuid
+                    example: 102aa5b4-6abc-45fc-a489-6ace1bc5ff7c
+                  endpoint:
+                    type: string
+                    example: https://example.com/myhook2
+                  secret:
+                    type: string
+                    example: "*"
+                  payload_template:
+                    type: string
+                    example: "{'text':'return code is {}'}"  
+                  content_type:
+                    type: string
+                    example: application/json
+    delete:
+      operationId: webhook-delete
+      summary: Delete a webhook
+      description: Delete a webhook on the server
+      requestBody:
+        description: Information to provide to delete a webhook
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 23445adc-b038-4be5-8e2d-42d0feaaeb7b
+      responses:
+        '200':
+          description: webhook deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 1110c255-36f3-4b38-8e2c-285fd1b4afdf
+                  name:
+                    type: string
+                    example: ping cloudflare
+                  automaton_id:
+                    type: string
+                    format: uuid
+                    example: 2449dbfe-80cf-443d-9291-f57cd3c399ff
+                  args:
+                    type: string
+                    example: google
+                  config_file:
+                    type: string
+                    example: .env
+components:
+  securitySchemes:
+    jwt:
+      description: |
+        Generate your JWT when you log in.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

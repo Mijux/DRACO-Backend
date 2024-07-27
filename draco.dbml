@@ -1,0 +1,72 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table task {
+  id uuid [primary key]
+  name varchar [not null]
+  run_count integer [default: 0, not null]
+  automaton_id varchar [not null, ref: > automaton.id]
+  args array
+  config_file varchar
+  created_at timestamp [default: `now()`, not null]
+}
+
+Table automaton {
+  id uuid [primary key]
+  name varchar [not null]
+  language varchar [not null]
+  executable varchar [not null]
+  version varchar [not null]
+  created_at timestamp [default: `now()`, not null]
+}
+
+Table run {
+  id uuid [primary key]
+  task_id uuid [not null, ref: > task.id]
+  status integer
+  value_returned varchar
+  logfile varchar [not null]
+  created_at timestamp [default: `now()`, not null]
+}
+
+Table periodic {
+  id uuid [primary key]
+  task_id uuid [not null, ref: > task.id]
+  year_recursivity timestamp
+  month_recursivity timestamp
+  day_recursivity timestamp
+  periode_recursivity timestamp
+  at_hour integer
+  at_minute integer
+  created_at timestamp [default: `now()`, not null]
+}
+
+Table user {
+  id uuid [primary key]
+  username str [primary key]
+  password str [not null]
+  email str
+  is_admin bool [not null]
+  created_at timestamp [default: `now()`, not null]
+}
+
+Table rel_user_task {
+  id_user uuid [ref: - user.id]
+  id_task uuid [ref: - task.id]
+  created_at timestamp [default: `now()`, not null]
+
+  indexes {
+    (id_user, id_task) [pk]
+  }
+}
+
+Table webhook {
+  id uuid [primary key]
+  task uuid [not null, ref: > task.id]
+  endpoint str [not null]
+  secret str
+  payload_template str [not null]
+  content_type str [default: "application/json", not null]
+}
+
+

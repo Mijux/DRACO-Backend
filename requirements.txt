@@ -1,0 +1,6 @@
+Flask
+schedule
+SQLAlchemy
+rich
+python-dotenv
+pyjwt
